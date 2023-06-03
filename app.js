@@ -17,8 +17,6 @@ const createTable = (editedData) => {
 
     // Data to table
 
-
-
     editedData.forEach(item => {
         let dataRow = document.createElement("tr");
         for (const key in item) {
@@ -32,10 +30,10 @@ const createTable = (editedData) => {
     tableBox.appendChild(table);
 }
 
-createTable(data);
+// Sorting
+
 lastSortBy = 'broj';
 const sortCol = (header, index) => {
-
     if (header == lastSortBy) {
         sortDirection = !sortDirection;
     } else {
@@ -58,14 +56,14 @@ const sortNumberCol = (sort, header) => {
     data = data.sort((a, b) => {
         return sort ? a[header] - b[header] : b[header] - a[header];
     });
-    createTable(data)
+    pagination(1);
 }
 
 const sortStringCol = (sort, header) => {
     data = data.sort((a, b) => {
         return sort ? (a[header] > b[header]) - (a[header] < b[header]) : (b[header] > a[header]) - (b[header] < a[header])
     });
-    createTable(data)
+    pagination(1);
 }
 
 let searchBtn = document.querySelector('.search-btn');
@@ -73,7 +71,7 @@ let input = document.querySelector('.search-bar');
 searchBtn.addEventListener('click', () => {
     let newData = []
     if (input.value == '') {
-        createTable(data)
+        pagination(1); 
     } else {
         data.forEach((item, index) => {
             for (const i in item) {
@@ -87,55 +85,51 @@ searchBtn.addEventListener('click', () => {
 });
 
 
+// Pagination
 
+let pageNum = document.querySelector('.page-number');
+let nextBtn = document.querySelector('.next');
+let previousBtn = document.querySelector('.previous');
+let numItems = 10;
 
+const selectOption = () => {
+    let dropdown = document.querySelector('#items');
+    let selectedIndex = dropdown.selectedIndex;
+    let selectedValue = dropdown.options[selectedIndex].value;
+    numItems = parseInt(selectedValue);
+    pagination(1);
+};
 
+const pagination = (index) => {
+    let len = index * numItems;
+    let base = (index - 1) * numItems;
+    let pagData = []
+    pageNum.innerText = index;
 
+    for (let i = base; i < len; i++) {
+        pagData.push(data[i]);
+    }
+    createTable(pagData)
+};
+pagination(1);
 
+nextBtn.addEventListener('click', () => {
+    let currentPage = parseInt(pageNum.innerText);
+    
+    if (parseInt(pageNum.innerText) <= (~~(data.length / numItems))) {
+        pageNum.innerText = currentPage + 1;
+        pagination(pageNum.innerText) 
+    }
+});
 
+previousBtn.addEventListener('click', () => {
+    let currentPage = parseInt(pageNum.innerText);
+    if (currentPage > 1) {
+        pageNum.innerText = currentPage - 1;
+        pagination(pageNum.innerText);
+    };
+});
 
-
-
-
-
-
-
-
-
-
-
-
-
-    // let count = 0;
-    // let i = 0;
-    // let pages = [];
-    // let page = [];
-    // editedData.forEach(item => {
-    //     page.push(item)
-    //     count++;
-    //     if (count == 10) {
-    //         pages.push(page)
-    //         page = [];
-    //         count = 0;
-    //     }
-    // });
-    // pages.forEach(item => {
-    //     item.forEach(i => {
-    //         console.log(i)
-    //     })
-    // })
-    // pages.forEach(page => {
-    //     page.forEach(item => {
-    //         let dataRow = document.createElement("tr");
-    //         for (const key in item) {
-    //             let dataText = document.createElement("td");
-    //             dataText.innerText = item[key];
-    //             dataRow.appendChild(dataText);
-    //             table.appendChild(dataRow);
-    //         };
-    //     })
-    // });
-    // tableBox.appendChild(table);
 
 
 

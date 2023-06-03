@@ -63,7 +63,10 @@ tr:hover {
     cursor: pointer;
 }
 .pages {
-    margin-bottom: 100px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 button {
     margin: 10px;
@@ -80,4 +83,19 @@ button {
 }
 button:hover {
     background-color: rgb(255, 81, 18);
+}
+.page-number {
+    margin: 0 20px;
+}
+.pagination {
+    width: 150px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 100px;
+}
+select {
+    width: 50px;
+    height: 30px;
+    margin: 0 auto;
 }
